@@ -30,10 +30,10 @@ def run_worker():
         payload['node_id'] = config.DEVICE_ID
 
         # 2. Capture Photo (Optional - creates 'CCTV' effect)
-        # print("📸 Taking photo...")
-        # photo_data = capture_snapshot()
-        # if photo_data:
-        #     payload['image'] = photo_data
+        print("📸 Taking photo...")
+        photo_data = capture_snapshot()
+        if photo_data:
+            payload['image'] = photo_data
 
         # 3. Send to Brain
         try:
