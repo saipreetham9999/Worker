@@ -21,10 +21,8 @@ else
 fi
 
 # Install dependencies quietly
-if [ -f "requirements.txt" ]; then
     echo "📦 Installing dependencies..."
     pip install -r requirements.txt > /dev/null 2>&1
-fi
 
 echo "✅ STARTING WORKER..."
 python3 main.py
