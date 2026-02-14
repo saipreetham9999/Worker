@@ -5,7 +5,7 @@ DIR_NAME="Worker"
 
 # Install dependencies quietly
     echo "📦 Installing dependencies..."
-    pip install -r requirements.txt 
+    pip install -r requirements.txt
 
 echo "✅ STARTING WORKER..."
 python3 main.py
