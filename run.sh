@@ -27,4 +27,4 @@ if [ -f "requirements.txt" ]; then
 fi
 
 echo "✅ STARTING WORKER..."
-python main.py
+python3 main.py
