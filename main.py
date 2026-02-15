@@ -6,6 +6,7 @@ import config
 # Import our custom skills
 from modules.system_info import get_stats
 from modules.camera import capture_snapshot
+from modules.weather_info import get_weather, get_coinbase_price, get_usd_to_inr, get_crypto_news
 
 
 def register():
@@ -29,20 +30,45 @@ def run_worker():
         payload = get_stats()
         payload['node_id'] = config.DEVICE_ID
 
-        # 2. Capture Photo (Optional - creates 'CCTV' effect)
-        print("📸 Taking photo...")
-        photo_data = capture_snapshot()
-        if photo_data:
-            payload['image'] = photo_data
+        # # 2. Capture Photo (Optional - creates 'CCTV' effect)
+        # print("📸 Taking photo...")
+        # photo_data = capture_snapshot()
+        # if photo_data:
+        #     payload['image'] = photo_data
 
-        # 3. Send to Brain
+        # 3. Fetch Weather & Crypto (New Skill)
+        weather = get_weather()
+        if weather:
+            payload['weather'] = weather
+            
+        crypto = get_coinbase_price()
+        if crypto:
+            payload['crypto'] = crypto
+            
+        exchange = get_usd_to_inr()
+        if exchange:
+            payload['exchange_rate'] = exchange
+            
+        news = get_crypto_news()
+        if news:
+            payload['news'] = news
+
+        # 4. Send to Brain
         try:
             requests.post(f"{config.BASE_URL}/report", json=payload, timeout=2)
-            print(f"📤 Sent: Battery {payload['battery']}% | CPU {payload['cpu_load']}%")
-        except:
-            print("⚠️ Brain unreachable")
+            print(f"📤 Sent: Battery {payload.get('battery', 'N/A')}%")
+            if weather:
+                print(f"   🌤️ Weather: {weather['temperature']}°C in {weather['location']}")
+            if crypto:
+                print(f"   💰 BTC: ${crypto['amount']}")
+            if exchange:
+                print(f"   💱 USD to INR: ₹{exchange['rate']}")
+            if news:
+                print(f"   📰 News: {news['title'][:50]}...")
+        except Exception as e:
+            print(f"⚠️ Brain unreachable: {e}")
 
-        # 4. Sleep
+        # 5. Sleep
         time.sleep(config.HEARTBEAT_INTERVAL)
 
 
