@@ -1,15 +1,14 @@
-import psutil
+from plyer import battery
 
 def get_stats():
-    """Returns system statistics (CPU, RAM, Battery)."""
-    # Only fetch battery info as requested
-    stats = {
-        "battery": 100  # Default if no battery
-    }
-    
-    if hasattr(psutil, "sensors_battery"):
-        battery = psutil.sensors_battery()
-        if battery:
-            stats["battery"] = battery.percent
-            
+    """Returns system statistics (Battery only for Android)."""
+    stats = {"battery": 100}  # default if unable to fetch
+    try:
+        battery_info = battery.status
+        if battery_info and "percentage" in battery_info:
+            stats["battery"] = battery_info["percentage"]
+    except:
+        pass
     return stats
+
+print(get_stats())

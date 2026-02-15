@@ -9,4 +9,4 @@ BASE_URL = f"http://{BRAIN_IP}:{PORT}/api"
 
 # Worker Identity
 DEVICE_ID = "Poco-M2-Pro"
-HEARTBEAT_INTERVAL = 30  # Seconds between reports
+HEARTBEAT_INTERVAL = 5  # Seconds between reports
